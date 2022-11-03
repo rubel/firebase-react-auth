@@ -1,14 +1,16 @@
 import { Box, Button } from '@mui/material';
 import { Field, Form, Formik } from 'formik';
 import { TextField } from 'formik-mui';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import { auth, logInWithEmailAndPassword, signInWithGoogle } from "../firebase";
 
 function Login() {
+    const [loginError, setLoginError] = useState("")
     const [user, loading, error] = useAuthState(auth);
     const navigate = useNavigate();
+    
 
     useEffect(() => {
         if (loading) {
@@ -18,21 +20,25 @@ function Login() {
       }, [user, loading]);
 
     const submitForm = async(values,form) =>{
-        logInWithEmailAndPassword(values.name,values.password).then((res)=>{
+        setLoginError("");
+        logInWithEmailAndPassword(values.email,values.password).then((res)=>{
             form.resetForm();
-            console.log(res);
+            if(res?.type === "error"){
+                console.log(res);
+                setLoginError(res.message);
+            }
         });
     }
   return (
     <div>
-        <div>Login</div>
+        <div><h2>Login</h2></div>
         <Box height={30} />
         {
             !loading && !user && 
             <div>
                 <Formik
                     enableReinitialize
-                    initialValues={{ name:"",password:"" }}
+                    initialValues={{ email:"",password:"" }}
                     onSubmit={(values,form) => {
                         submitForm(values,form);
                     }}
@@ -41,8 +47,8 @@ function Login() {
                         <Field
                             component={TextField}
                             type="text"
-                            label="Name"
-                            name="name"
+                            label="email"
+                            name="email"
                         />
 
                         <Box marginBottom={3} />
@@ -53,6 +59,10 @@ function Login() {
                             name="password"
                         />
                         <Box height={30} />
+                        <div style={{color:"red"}}>
+                            {loginError}
+                            <Box height={30} />
+                        </div>
                         <Button
                             type="submit"
                             variant="contained"
@@ -60,9 +70,9 @@ function Login() {
                         >
                             Submit
                         </Button>
-                            <Button type="button" style={{marginLeft:"8px"}} onClick={signInWithGoogle}>
-                                Login with Google
-                            </Button>
+                        <Button type="button" style={{marginLeft:"8px"}} onClick={signInWithGoogle}>
+                            Login with Google
+                        </Button>
                     </Form>
                 </Formik>
             </div>

@@ -48,15 +48,16 @@ const logInWithEmailAndPassword = async (email, password) => {
       await signInWithEmailAndPassword(auth, email, password).then(
         (res)=>{
             console.log(res);
+            return {type:"success",message:res.message,data:res};
         }
       );
     } catch (err) {
       console.error(err.message);
-      return err;
+      return {type:"error",message:err.message,data:err};
     }
   };
 
-  const registerWithEmailAndPassword = async (name, email, password) => {
+  const registerWithEmailAndPassword = async (name, email, password,country,religion) => {
     try {
       const res = await createUserWithEmailAndPassword(auth, email, password);
       const user = res.user;
@@ -65,10 +66,12 @@ const logInWithEmailAndPassword = async (email, password) => {
         name,
         authProvider: "local",
         email,
+        country,
+        religion
       });
     } catch (err) {
-      console.error(err);
-      console.log(err.message);
+      console.error(err.message);
+      return {type:"error",message:err.message,data:err};
     }
   };
 
