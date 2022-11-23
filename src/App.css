@@ -22,6 +22,8 @@ li {
   background-color: gray;
   padding: 10px 15px;
   margin-right: 2px;
+  color: white;
+  text-decoration: none;
 }
 
 li a {

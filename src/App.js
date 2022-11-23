@@ -1,27 +1,35 @@
-import { Link, Route } from 'react-router-dom';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { Link, Route, Routes } from 'react-router-dom';
 import './App.css';
+import { auth } from './firebase';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 
 function App() {
+  const [user, loading] = useAuthState(auth);
+
   return (
     <div className="App">
       <div className='nav'>
         <nav>
           <ul>
-            <li><Link to={"/"}>Home</Link></li>
-            <li><Link to={"/login"}>Login</Link></li>
-            <li><Link to={"/signup"}>Signup</Link></li>
+            <Link to={"/"}><li>Home</li></Link>
+            {
+              !user && <Link to={"/login"}><li>Login</li></Link>
+            }
+            {
+              !user && <Link to={"/signup"}><li>Signup</li></Link>
+            }
           </ul>
         </nav>
       </div>
-
-      <Route path='/' element={<Dashboard/>}/>
-      <Route path='/dashboard' element={<Dashboard/>}/>
-      <Route path='/login' element={<Login/>}/>
-      <Route path='/signup' element={<Signup/>}/>
-
+      <Routes>
+        <Route path='/' element={<Dashboard/>}/>
+        <Route path='/dashboard' element={<Dashboard/>}/>
+        <Route path='/login' element={<Login/>}/>
+        <Route path='/signup' element={<Signup/>}/>
+      </Routes>
     </div>
   );
 }
