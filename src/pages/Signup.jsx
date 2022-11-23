@@ -40,6 +40,7 @@ function Signup() {
                 <h2>SignUp</h2>
             </div>
             <Box height={10} />
+            <div>{error}</div>
             <div>
                 <Formik
                     enableReinitialize

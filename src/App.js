@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Link, Route } from 'react-router-dom';
 import './App.css';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
@@ -10,21 +10,18 @@ function App() {
       <div className='nav'>
         <nav>
           <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/login">Login</a></li>
-            <li><a href="/signup">Signup</a></li>
+            <li><Link to={"/"}>Home</Link></li>
+            <li><Link to={"/login"}>Login</Link></li>
+            <li><Link to={"/signup"}>Signup</Link></li>
           </ul>
         </nav>
       </div>
 
-      <Router>
-        <Routes>
-          <Route path='/' element={<Dashboard/>}/>
-          <Route path='/dashboard' element={<Dashboard/>}/>
-          <Route path='/login' element={<Login/>}/>
-          <Route path='/signup' element={<Signup/>}/>
-        </Routes>
-      </Router>
+      <Route path='/' element={<Dashboard/>}/>
+      <Route path='/dashboard' element={<Dashboard/>}/>
+      <Route path='/login' element={<Login/>}/>
+      <Route path='/signup' element={<Signup/>}/>
+
     </div>
   );
 }
