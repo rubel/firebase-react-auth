@@ -24,6 +24,7 @@ function App() {
           </ul>
         </nav>
       </div>
+              
       <Routes>
         <Route path='/' element={<Dashboard/>}/>
         <Route path='/dashboard' element={<Dashboard/>}/>
